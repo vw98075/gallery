@@ -215,6 +215,9 @@ dependencies {
     compile "org.springframework.security:spring-security-data"
     compile "org.springframework.security:spring-security-web"
     compile "io.jsonwebtoken:jjwt-api"
+    // https://mvnrepository.com/artifact/com.drewnoakes/metadata-extractor
+    compile group: 'com.drewnoakes', name: 'metadata-extractor', version: '2.11.0'
+
     runtime "io.jsonwebtoken:jjwt-impl"
     runtime "io.jsonwebtoken:jjwt-jackson"
     compile ("io.springfox:springfox-swagger2") {

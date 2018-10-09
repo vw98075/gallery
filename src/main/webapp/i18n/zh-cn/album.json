@@ -1,0 +1,25 @@
+
+{
+    "galleryApp": {
+        "album" : {
+            "home": {
+                "title": "Albums",
+                "createLabel": "创建新 Album",
+                "createOrEditLabel": "创建或编辑 Album"
+            },
+            "created": "Album {{ param }} 创建成功",
+            "updated": "Album {{ param }} 更新成功",
+            "deleted": "Album {{ param }} 删除成功",
+            "delete": {
+                "question": "你确定要删除 Album {{ id }} 吗？"
+            },
+            "detail": {
+                "title": "Album"
+            },
+            "title": "Title",
+            "description": "Description",
+            "created": "Created",
+            "user": "User"
+        }
+    }
+}
