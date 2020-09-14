@@ -4,7 +4,7 @@
       "packageName": "com.mycompany.myapp",
       "nativeLanguage": "en"
     },
-    "jhipsterVersion": "5.4.2",
+    "jhipsterVersion": "6.10.1",
     "applicationType": "monolith",
     "baseName": "gallery",
     "packageName": "com.mycompany.myapp",
@@ -24,17 +24,19 @@
     "enableSwaggerCodegen": false,
     "jwtSecretKey": "YzczYzMxYTBjMWU2YzM0MWM5MGI1Y2I5MTMzNzJjYWNlMzhlNGRjN2E5MzZmMTE5NjIxN2ZjZmJjOWNmMTEyYjk3ZjI3N2UxY2I3MTVhNGNhZGFjZjk1YmI1OGE2YjRmZDYwYjA1YzE4ZDE4Y2Q4Y2NhZmIzODQ5OWJlYzBjM2M=",
     "clientFramework": "react",
-    "useSass": false,
+    "useSass": true,
     "clientPackageManager": "npm",
-    "testFrameworks": [
-      "protractor"
-    ],
+    "testFrameworks": ["protractor"],
     "jhiPrefix": "jhi",
     "enableTranslation": true,
     "nativeLanguage": "en",
-    "languages": [
-      "en",
-      "zh-cn"
-    ]
+    "languages": ["en", "zh-cn"],
+    "embeddableLaunchScript": false,
+    "clientTheme": "none",
+    "creationTimestamp": 1600052579605,
+    "entitySuffix": "",
+    "dtoSuffix": "DTO",
+    "otherModules": [],
+    "blueprints": []
   }
 }

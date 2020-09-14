@@ -32,13 +32,13 @@ export default class NavBarPage extends BasePage {
 
   async getRegisterPage() {
     await this.clickOnAccountMenu();
-    await this.clickOnTabMenu('#/register');
+    await this.clickOnTabMenu('/account/register');
     return new RegisterPage();
   }
 
   async getSignInPage() {
     await this.clickOnAccountMenu();
-    await this.clickOnTabMenu('#/login');
+    await this.clickOnTabMenu('/login');
     return this.signInPage;
   }
 
@@ -48,10 +48,7 @@ export default class NavBarPage extends BasePage {
   }
 
   async clickOnTabMenu(item: string) {
-    await this.selector
-      .$('#header-tabs')
-      .$(`.dropdown-item[href="${item}"]`)
-      .click();
+    await this.selector.$('#header-tabs').$(`.dropdown-item[href="${item}"]`).click();
   }
 
   async clickOnAccountMenu() {
@@ -60,12 +57,12 @@ export default class NavBarPage extends BasePage {
 
   async clickOnAccountMenuItem(item: string) {
     await this.accountMenu.click();
-    await this.selector.$(`.dropdown-item[href="#/account/${item}"`).click();
+    await this.selector.$(`.dropdown-item[href="/account/${item}"]`).click();
   }
 
   async clickOnAdminMenuItem(item: string) {
     await this.adminMenu.click();
-    await this.selector.$(`.dropdown-item[href="#/admin/${item}"]`).click();
+    await this.selector.$(`.dropdown-item[href="/admin/${item}"]`).click();
   }
 
   async clickOnEntityMenu() {
@@ -73,15 +70,18 @@ export default class NavBarPage extends BasePage {
   }
 
   async clickOnEntity(entityName: string) {
-    await this.selector.$(`.dropdown-item[href="#/entity/${entityName}"]`).click();
+    await this.selector.$(`.dropdown-item[href="/${entityName}"]`).click();
   }
 
   async autoSignIn() {
     await this.signInPage.get();
-    await this.signInPage.autoSignInUsing('admin', 'admin');
+    const username = process.env.E2E_USERNAME || 'admin';
+    const password = process.env.E2E_PASSWORD || 'admin';
+    await this.signInPage.autoSignInUsing(username, password);
   }
 
   async autoSignOut() {
-    await this.signInPage.autoSignOut();
+    await this.accountMenu.click();
+    await this.selector.$(`.dropdown-item[href="/logout"]`).click();
   }
 }

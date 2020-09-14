@@ -4,12 +4,17 @@ import promiseMiddleware from 'redux-promise-middleware';
 import thunk from 'redux-thunk';
 import axios from 'axios';
 import sinon from 'sinon';
+import { TranslatorContext } from 'react-jhipster';
 
 import account, { ACTION_TYPES, saveAccountSettings, reset } from 'app/modules/account/settings/settings.reducer';
 import { ACTION_TYPES as authActionTypes } from 'app/shared/reducers/authentication';
 import { ACTION_TYPES as localeActionTypes } from 'app/shared/reducers/locale';
 
 describe('Settings reducer tests', () => {
+  beforeAll(() => {
+    TranslatorContext.registerTranslations('en', {});
+  });
+
   describe('Common tests', () => {
     it('should return the initial state', () => {
       const toTest = account(undefined, {});
@@ -17,7 +22,7 @@ describe('Settings reducer tests', () => {
         loading: false,
         errorMessage: null,
         updateSuccess: false,
-        updateFailure: false
+        updateFailure: false,
       });
     });
   });
@@ -28,7 +33,7 @@ describe('Settings reducer tests', () => {
       expect(toTest).toMatchObject({
         updateSuccess: false,
         updateFailure: false,
-        loading: true
+        loading: true,
       });
     });
     it('should detect a success', () => {
@@ -36,7 +41,7 @@ describe('Settings reducer tests', () => {
       expect(toTest).toMatchObject({
         updateSuccess: true,
         updateFailure: false,
-        loading: false
+        loading: false,
       });
     });
     it('should detect a failure', () => {
@@ -44,7 +49,7 @@ describe('Settings reducer tests', () => {
       expect(toTest).toMatchObject({
         updateSuccess: false,
         updateFailure: true,
-        loading: false
+        loading: false,
       });
     });
 
@@ -53,17 +58,17 @@ describe('Settings reducer tests', () => {
         loading: false,
         errorMessage: null,
         updateSuccess: false,
-        updateFailure: false
+        updateFailure: false,
       };
       expect(
         account(
           { ...initialState, loading: true },
           {
-            type: ACTION_TYPES.RESET
+            type: ACTION_TYPES.RESET,
           }
         )
       ).toEqual({
-        ...initialState
+        ...initialState,
       });
     });
   });
@@ -73,7 +78,7 @@ describe('Settings reducer tests', () => {
 
     const resolvedObject = { value: 'whatever' };
     beforeEach(() => {
-      const mockStore = configureStore([thunk, promiseMiddleware()]);
+      const mockStore = configureStore([thunk, promiseMiddleware]);
       store = mockStore({ authentication: { account: { langKey: 'en' } } });
       axios.get = sinon.stub().returns(Promise.resolve(resolvedObject));
       axios.post = sinon.stub().returns(Promise.resolve(resolvedObject));
@@ -81,38 +86,38 @@ describe('Settings reducer tests', () => {
 
     it('dispatches UPDATE_ACCOUNT_PENDING and UPDATE_ACCOUNT_FULFILLED actions', async () => {
       const meta = {
-        successMessage: 'translation-not-found[settings.messages.success]'
+        successMessage: 'translation-not-found[settings.messages.success]',
       };
 
       const expectedActions = [
         {
           type: REQUEST(ACTION_TYPES.UPDATE_ACCOUNT),
-          meta
+          meta,
         },
         {
           type: SUCCESS(ACTION_TYPES.UPDATE_ACCOUNT),
           payload: resolvedObject,
-          meta
+          meta,
         },
         {
-          type: REQUEST(authActionTypes.GET_SESSION)
+          type: REQUEST(authActionTypes.GET_SESSION),
         },
         {
           type: SUCCESS(authActionTypes.GET_SESSION),
-          payload: resolvedObject
+          payload: resolvedObject,
         },
         {
           type: localeActionTypes.SET_LOCALE,
-          locale: 'en'
-        }
+          locale: 'en',
+        },
       ];
       await store.dispatch(saveAccountSettings({})).then(() => expect(store.getActions()).toEqual(expectedActions));
     });
     it('dispatches ACTION_TYPES.RESET actions', async () => {
       const expectedActions = [
         {
-          type: ACTION_TYPES.RESET
-        }
+          type: ACTION_TYPES.RESET,
+        },
       ];
       await store.dispatch(reset());
       expect(store.getActions()).toEqual(expectedActions);

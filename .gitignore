@@ -1,7 +1,8 @@
 ######################
 # Project Specific
 ######################
-/build/www/**
+/src/main/webapp/content/css/main.css
+/build/resources/main/static/**
 /src/test/javascript/coverage/
 
 ######################
@@ -50,8 +51,11 @@ local.properties
 # PDT-specific
 .buildpath
 
+# STS-specific
+/.sts4-cache/*
+
 ######################
-# Intellij
+# IntelliJ
 ######################
 .idea/
 *.iml

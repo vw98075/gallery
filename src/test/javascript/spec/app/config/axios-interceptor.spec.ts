@@ -9,13 +9,12 @@ describe('Axios Interceptor', () => {
     const onUnauthenticated = sinon.spy();
     setupAxiosInterceptors(onUnauthenticated);
 
-    it('onRequestSuccess is called on fullfilled request', () => {
+    it('onRequestSuccess is called on fulfilled request', () => {
       expect((client.interceptors.request as any).handlers[0].fulfilled({ data: 'foo', url: '/test' })).toMatchObject({
         data: 'foo',
-        timeout: 1000000
       });
     });
-    it('onResponseSuccess is called on fullfilled response', () => {
+    it('onResponseSuccess is called on fulfilled response', () => {
       expect((client.interceptors.response as any).handlers[0].fulfilled({ data: 'foo' })).toEqual({ data: 'foo' });
     });
     it('onResponseError is called on rejected response', () => {
@@ -23,8 +22,8 @@ describe('Axios Interceptor', () => {
         response: {
           statusText: 'NotFound',
           status: 403,
-          data: { message: 'Page not found' }
-        }
+          data: { message: 'Page not found' },
+        },
       });
       expect(onUnauthenticated.calledOnce).toBe(true);
     });

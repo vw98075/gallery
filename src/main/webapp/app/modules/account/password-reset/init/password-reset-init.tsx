@@ -35,13 +35,13 @@ export class PasswordResetInit extends React.Component<IPasswordResetInitProps> 
             <AvForm onValidSubmit={this.handleValidSubmit}>
               <AvField
                 name="email"
-                label={translate('global.form.email')}
+                label={translate('global.form.email.label')}
                 placeholder={translate('global.form.email.placeholder')}
                 type="email"
                 validate={{
                   required: { value: true, errorMessage: translate('global.messages.validate.email.required') },
                   minLength: { value: 5, errorMessage: translate('global.messages.validate.email.minlength') },
-                  maxLength: { value: 254, errorMessage: translate('global.messages.validate.email.maxlength') }
+                  maxLength: { value: 254, errorMessage: translate('global.messages.validate.email.maxlength') },
                 }}
               />
               <Button color="primary" type="submit">
@@ -59,7 +59,4 @@ const mapDispatchToProps = { handlePasswordResetInit, reset };
 
 type DispatchProps = typeof mapDispatchToProps;
 
-export default connect(
-  null,
-  mapDispatchToProps
-)(PasswordResetInit);
+export default connect(null, mapDispatchToProps)(PasswordResetInit);

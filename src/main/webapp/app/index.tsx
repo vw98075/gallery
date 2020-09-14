@@ -2,7 +2,6 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { AppContainer } from 'react-hot-loader';
 
 import DevTools from './config/devtools';
 import initStore from './config/store';
@@ -26,27 +25,18 @@ loadIcons();
 const rootEl = document.getElementById('root');
 
 const render = Component =>
+  // eslint-disable-next-line react/no-render-return-value
   ReactDOM.render(
     <ErrorBoundary>
-      <AppContainer>
-        <Provider store={store}>
-          <div>
-            {/* If this slows down the app in dev disable it and enable when required  */}
-            {devTools}
-            <Component />
-          </div>
-        </Provider>
-      </AppContainer>
+      <Provider store={store}>
+        <div>
+          {/* If this slows down the app in dev disable it and enable when required  */}
+          {devTools}
+          <Component />
+        </div>
+      </Provider>
     </ErrorBoundary>,
     rootEl
   );
 
 render(AppComponent);
-
-// This is quite unstable
-// if (module.hot) {
-//   module.hot.accept('./app', () => {
-//     const NextApp = require<{ default: typeof AppComponent }>('./app').default;
-//     render(NextApp);
-//   });
-// }

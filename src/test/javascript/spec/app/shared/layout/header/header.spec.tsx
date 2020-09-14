@@ -7,7 +7,7 @@ import LoadingBar from 'react-redux-loading-bar';
 import { Navbar, Nav } from 'reactstrap';
 
 import { Home, Brand } from 'app/shared/layout/header/header-components';
-import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu } from 'app/shared/layout/header/menus';
+import { AdminMenu, EntitiesMenu, AccountMenu, LocaleMenu } from 'app/shared/layout/menus';
 import Header from 'app/shared/layout/header/header';
 
 describe('Header', () => {
@@ -22,22 +22,22 @@ describe('Header', () => {
     onLocaleChange: localeSpy,
     ribbonEnv: 'dev',
     isInProduction: false,
-    isSwaggerEnabled: true
+    isSwaggerEnabled: true,
   };
   const prodProps = {
     ...devProps,
     ribbonEnv: 'prod',
     isInProduction: true,
-    isSwaggerEnabled: false
+    isSwaggerEnabled: false,
   };
   const userProps = {
     ...prodProps,
-    isAdmin: false
+    isAdmin: false,
   };
   const guestProps = {
     ...prodProps,
     isAdmin: false,
-    isAuthenticated: false
+    isAuthenticated: false,
   };
 
   const wrapper = (props = devProps) => {

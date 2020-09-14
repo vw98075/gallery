@@ -1,20 +1,18 @@
 import axios from 'axios';
-import { translate } from 'react-jhipster';
-
+import { translate, Storage } from 'react-jhipster';
 import { REQUEST, SUCCESS, FAILURE } from 'app/shared/reducers/action-type.util';
 import { getSession } from 'app/shared/reducers/authentication';
-import { setLocale } from 'app/shared/reducers/locale';
 
 export const ACTION_TYPES = {
   UPDATE_ACCOUNT: 'account/UPDATE_ACCOUNT',
-  RESET: 'account/RESET'
+  RESET: 'account/RESET',
 };
 
 const initialState = {
   loading: false,
   errorMessage: null,
   updateSuccess: false,
-  updateFailure: false
+  updateFailure: false,
 };
 
 export type SettingsState = Readonly<typeof initialState>;
@@ -27,25 +25,25 @@ export default (state: SettingsState = initialState, action): SettingsState => {
         ...state,
         errorMessage: null,
         updateSuccess: false,
-        loading: true
+        loading: true,
       };
     case FAILURE(ACTION_TYPES.UPDATE_ACCOUNT):
       return {
         ...state,
         loading: false,
         updateSuccess: false,
-        updateFailure: true
+        updateFailure: true,
       };
     case SUCCESS(ACTION_TYPES.UPDATE_ACCOUNT):
       return {
         ...state,
         loading: false,
         updateSuccess: true,
-        updateFailure: false
+        updateFailure: false,
       };
     case ACTION_TYPES.RESET:
       return {
-        ...initialState
+        ...initialState,
       };
     default:
       return state;
@@ -55,22 +53,22 @@ export default (state: SettingsState = initialState, action): SettingsState => {
 // Actions
 const apiUrl = 'api/account';
 
-export const saveAccountSettings = account => async (dispatch, getState) => {
+export const saveAccountSettings: (account: any) => void = account => async dispatch => {
   await dispatch({
     type: ACTION_TYPES.UPDATE_ACCOUNT,
     payload: axios.post(apiUrl, account),
     meta: {
-      successMessage: translate('settings.messages.success')
-    }
+      successMessage: translate('settings.messages.success'),
+    },
   });
-  await dispatch(getSession());
 
-  const accountState = getState().authentication.account;
-  if (accountState && accountState.langKey) {
-    await dispatch(setLocale(accountState.langKey));
+  if (Storage.session.get(`locale`)) {
+    Storage.session.remove(`locale`);
   }
+
+  await dispatch(getSession());
 };
 
 export const reset = () => ({
-  type: ACTION_TYPES.RESET
+  type: ACTION_TYPES.RESET,
 });

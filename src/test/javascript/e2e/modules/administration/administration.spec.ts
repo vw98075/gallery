@@ -1,4 +1,3 @@
-/* tslint:disable no-unused-expression */
 import { element, by, browser } from 'protractor';
 
 import NavBarPage from '../../page-objects/navbar-page';
@@ -10,6 +9,8 @@ const expect = chai.expect;
 describe('Administration', () => {
   let navBarPage: NavBarPage;
   let signInPage: SignInPage;
+  const username = process.env.E2E_USERNAME || 'admin';
+  const password = process.env.E2E_PASSWORD || 'admin';
 
   before(async () => {
     await browser.get('/');
@@ -17,8 +18,8 @@ describe('Administration', () => {
     signInPage = await navBarPage.getSignInPage();
     await signInPage.waitUntilDisplayed();
 
-    await signInPage.username.sendKeys('admin');
-    await signInPage.password.sendKeys('admin');
+    await signInPage.username.sendKeys(username);
+    await signInPage.password.sendKeys(password);
     await signInPage.loginButton.click();
     await signInPage.waitUntilHidden();
 
@@ -35,6 +36,7 @@ describe('Administration', () => {
 
   it('should load metrics', async () => {
     await navBarPage.clickOnAdminMenuItem('metrics');
+    await waitUntilDisplayed(element(by.id('metrics-page-heading')));
     expect(await element(by.id('metrics-page-heading')).getText()).to.eq('Application Metrics');
   });
 

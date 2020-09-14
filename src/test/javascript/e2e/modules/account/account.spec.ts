@@ -1,4 +1,3 @@
-/* tslint:disable no-unused-expression */
 import { browser, element, by } from 'protractor';
 
 import SignInPage from '../../page-objects/signin-page';
@@ -11,7 +10,8 @@ import {
   getUserDeactivatedButtonByLogin,
   getModifiedDateSortButton,
   waitUntilDisplayed,
-  waitUntilHidden
+  waitUntilClickable,
+  waitUntilHidden,
 } from '../../util/utils';
 
 const expect = chai.expect;
@@ -19,6 +19,8 @@ const expect = chai.expect;
 describe('Account', () => {
   let navBarPage: NavBarPage;
   let signInPage: SignInPage;
+  const username = process.env.E2E_USERNAME || 'admin';
+  const password = process.env.E2E_PASSWORD || 'admin';
   let passwordPage: PasswordPage;
   let settingsPage: SettingsPage;
   let registerPage: RegisterPage;
@@ -39,7 +41,7 @@ describe('Account', () => {
     // Login page should appear
     expect(await signInPage.getTitle()).to.eq(loginPageTitle);
 
-    await signInPage.username.sendKeys('admin');
+    await signInPage.username.sendKeys(username);
     await signInPage.password.sendKeys('foo');
     await signInPage.loginButton.click();
 
@@ -53,8 +55,8 @@ describe('Account', () => {
 
     expect(await signInPage.getTitle()).to.eq(loginPageTitle);
 
-    await signInPage.username.sendKeys('admin');
-    await signInPage.password.sendKeys('admin');
+    await signInPage.username.sendKeys(username);
+    await signInPage.password.sendKeys(password);
     await signInPage.loginButton.click();
     await signInPage.waitUntilHidden();
 
@@ -82,8 +84,8 @@ describe('Account', () => {
     await signInPage.get();
     expect(await signInPage.getTitle()).to.eq(loginPageTitle);
 
-    await signInPage.username.sendKeys('admin');
-    await signInPage.password.sendKeys('admin');
+    await signInPage.username.sendKeys(username);
+    await signInPage.password.sendKeys(password);
     await signInPage.loginButton.click();
     await signInPage.waitUntilHidden();
 
@@ -101,10 +103,11 @@ describe('Account', () => {
 
     const modifiedDateSortButton = getModifiedDateSortButton();
     await waitUntilDisplayed(modifiedDateSortButton);
+    await waitUntilClickable(modifiedDateSortButton);
     await modifiedDateSortButton.click();
 
     const deactivatedButton = getUserDeactivatedButtonByLogin('user_test');
-    await waitUntilDisplayed(deactivatedButton);
+    await waitUntilClickable(deactivatedButton);
     await deactivatedButton.click();
     await waitUntilHidden(deactivatedButton);
 
@@ -155,8 +158,8 @@ describe('Account', () => {
     await signInPage.get();
     expect(await signInPage.getTitle()).to.eq(loginPageTitle);
 
-    await signInPage.username.sendKeys('admin');
-    await signInPage.password.sendKeys('admin');
+    await signInPage.username.sendKeys(username);
+    await signInPage.password.sendKeys(password);
     await signInPage.loginButton.click();
     await signInPage.waitUntilHidden();
 
@@ -181,7 +184,7 @@ describe('Account', () => {
     await passwordPage.waitUntilDisplayed();
     expect(await passwordPage.getTitle()).to.eq(passwordPageTitle);
 
-    await passwordPage.autoChangePassword('admin', 'new_password', 'new_password');
+    await passwordPage.autoChangePassword(username, 'new_password', 'new_password');
     const toast = getToastByInnerText('Password changed!');
     await waitUntilDisplayed(toast);
 
@@ -194,7 +197,7 @@ describe('Account', () => {
     await signInPage.get();
     expect(await signInPage.getTitle()).to.eq(loginPageTitle);
 
-    await signInPage.username.sendKeys('admin');
+    await signInPage.username.sendKeys(username);
     await signInPage.password.sendKeys('new_password');
     await signInPage.loginButton.click();
     await signInPage.waitUntilHidden();
@@ -204,7 +207,7 @@ describe('Account', () => {
     await passwordPage.get();
     expect(await passwordPage.getTitle()).to.eq(passwordPageTitle);
 
-    await passwordPage.autoChangePassword('new_password', 'admin', 'admin');
+    await passwordPage.autoChangePassword('new_password', password, password);
 
     await navBarPage.autoSignOut();
   });
@@ -225,6 +228,7 @@ describe('Account', () => {
     await waitUntilDisplayed(navBarPage.accountMenu);
 
     settingsPage = await navBarPage.getSettingsPage();
+    await waitUntilDisplayed(settingsPage.title);
     expect(await settingsPage.getTitle()).to.eq(settingsPageTitle);
 
     await settingsPage.firstName.sendKeys('jhipster');
@@ -243,8 +247,8 @@ describe('Account', () => {
     await signInPage.get();
     expect(await signInPage.getTitle()).to.eq(loginPageTitle);
 
-    await signInPage.username.sendKeys('admin');
-    await signInPage.password.sendKeys('admin');
+    await signInPage.username.sendKeys(username);
+    await signInPage.password.sendKeys(password);
     await signInPage.loginButton.click();
     await signInPage.waitUntilHidden();
 
@@ -266,7 +270,7 @@ describe('Account', () => {
   });
 
   it('should delete previously created fake user', async () => {
-    await browser.get('#/admin/user-management/user_test/delete');
+    await browser.get('/admin/user-management/user_test/delete');
     const deleteModal = element(by.className('modal'));
     await waitUntilDisplayed(deleteModal);
 

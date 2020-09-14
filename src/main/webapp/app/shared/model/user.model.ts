@@ -8,24 +8,24 @@ export interface IUser {
   langKey?: string;
   authorities?: any[];
   createdBy?: string;
-  createdDate?: Date;
+  createdDate?: Date | null;
   lastModifiedBy?: string;
-  lastModifiedDate?: Date;
+  lastModifiedDate?: Date | null;
   password?: string;
 }
 
 export const defaultValue: Readonly<IUser> = {
-  id: null,
-  login: null,
-  firstName: null,
-  lastName: null,
-  email: null,
-  activated: false,
-  langKey: null,
-  authorities: null,
-  createdBy: null,
+  id: '',
+  login: '',
+  firstName: '',
+  lastName: '',
+  email: '',
+  activated: true,
+  langKey: '',
+  authorities: [],
+  createdBy: '',
   createdDate: null,
-  lastModifiedBy: null,
+  lastModifiedBy: '',
   lastModifiedDate: null,
-  password: null
+  password: '',
 };

@@ -22,13 +22,13 @@ export default () => next => action => {
         toast.success(action.meta.successMessage);
       } else if (response && response.action && response.action.payload && response.action.payload.headers) {
         const headers = response.action.payload.headers;
-        let alert: string = null;
-        let alertParams: string = null;
-        Object.entries(headers).forEach(([k, v]: [string, string]) => {
+        let alert: string | null = null;
+        let alertParams: string | null = null;
+        Object.entries<string>(headers).forEach(([k, v]) => {
           if (k.toLowerCase().endsWith('app-alert')) {
             alert = v;
           } else if (k.toLowerCase().endsWith('app-params')) {
-            alertParams = v;
+            alertParams = decodeURIComponent(v.replace(/\+/g, ' '));
           }
         });
         if (alert) {
@@ -52,10 +52,10 @@ export default () => next => action => {
               addErrorAlert('Server not reachable', 'error.server.not.reachable');
               break;
 
-            case 400:
-              const headers = Object.entries(response.headers);
-              let errorHeader = null;
-              let entityKey = null;
+            case 400: {
+              const headers = Object.entries<string>(response.headers);
+              let errorHeader: string | null = null;
+              let entityKey: string | null = null;
               headers.forEach(([k, v]: [string, string]) => {
                 if (k.toLowerCase().endsWith('app-error')) {
                   errorHeader = v;
@@ -84,7 +84,7 @@ export default () => next => action => {
                 addErrorAlert(data);
               }
               break;
-
+            }
             case 404:
               addErrorAlert('Not found', 'error.url.not.found');
               break;
@@ -97,6 +97,9 @@ export default () => next => action => {
               }
           }
         }
+      } else if (error && error.config && error.config.url === 'api/account' && error.config.method === 'get') {
+        /* eslint-disable no-console */
+        console.log('Authentication Error: Trying to access url api/account with GET.');
       } else if (error && error.message) {
         toast.error(error.message);
       } else {
